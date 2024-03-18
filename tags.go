@@ -42,8 +42,7 @@ type TagMaker interface {
 // types with cyclic references. Passing cyclic structures to Convert will result in an infinite
 // recursion.
 //
-// Convert doesn't support any interfaces, functions, chan and unsafe pointers.
-// Interfaces is not supported because they requires memory-copy operations in most cases.
+// Convert doesn't support any functions, chan and unsafe pointers.
 // Passing structures that contains unsupported types to Convert will result in a panic.
 //
 // Convert doesn't reconstruct methods for a structure type until go1.9
@@ -53,7 +52,7 @@ type TagMaker interface {
 // BUG(yar): Convert panics on structure with a final zero-size field in go1.7.
 // It is fixed in go1.8 (see github.com/golang/go/issues/18016).
 func Convert(p interface{}, maker TagMaker) interface{} {
-	return convert(p, maker, false)
+	return convert(p, maker, true)
 }
 
 // ConvertAny is basically the same as Convert except it doesn't panic in case if struct field has empty interface type,
